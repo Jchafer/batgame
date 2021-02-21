@@ -1,0 +1,105 @@
+<odoo>
+    <data>
+        <!-- Tree and Form building -->
+        <record model="ir.ui.view" id="batgame.building_tree">
+            <field name="name">Building tree</field>
+            <field name="model">batgame.building</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="resistance"/>
+                    <field name="city"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.building_form">
+            <field name="name">Building form</field>
+            <field name="model">batgame.building</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="resistance"/>
+                            <field name="city"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree and Form building_type -->
+        <record model="ir.ui.view" id="batgame.building_type_tree">
+            <field name="name">Building type tree</field>
+            <field name="model">batgame.building_type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="requirements"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.building_type_form">
+            <field name="name">Building type form</field>
+            <field name="model">batgame.building_type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="requirements"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.building_formReadOnly">
+            <field name="name">Building formReadOnly</field>
+            <field name="model">batgame.building</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="resistance" readonly="True"/>
+                            <field name="city" readonly="True"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.building_search">
+            <field name="name">Building search</field>
+            <field name="model">batgame.building</field>
+            <field name="arch" type="xml">
+                <search>
+                    <!-- Solo se mostrarán edificios con mayor resistencia a 50 -->
+                    <group string="Group By">
+                        <filter name="Buildings" string="For resistance >= 50" domain="[('resistance', '&gt;=','50')]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="batgame.building_action_window">
+            <field name="name">Buildings</field>
+            <field name="res_model">batgame.building</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record model="ir.actions.act_window" id="batgame.building_type_action_window">
+            <field name="name">Building types</field>
+            <field name="res_model">batgame.building_type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem name="Buildings" id="batgame.menu_1_building" parent="batgame.menu_2"
+                  action="batgame.building_action_window"/>
+        <menuitem name="Buildings Types" id="batgame.menu_1_building_type" parent="batgame.menu_2"
+                  action="batgame.building_type_action_window"/>
+    </data>
+</odoo>

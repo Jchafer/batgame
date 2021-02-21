@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+
+        <!-- actions opening views on models -->
+
+        <!-- server action to the one above -->
+        <!--
+            <record model="ir.actions.server" id="batgame.action_server">
+              <field name="name">batgame server</field>
+              <field name="model_id" ref="model_batgame_batgame"/>
+              <field name="state">code</field>
+              <field name="code">
+                action = {
+                  "type": "ir.actions.act_window",
+                  "view_mode": "tree,form",
+                  "res_model": model._name,
+                }
+              </field>
+            </record>
+        -->
+
+        <!-- Top menu item -->
+        <menuitem name="BatGame" id="batgame.menu_root"/>
+
+        <!-- menu categories -->
+        <menuitem name="BatGame" id="batgame.menu_1" parent="batgame.menu_root"/>
+        <menuitem name="Aux" id="batgame.menu_2" parent="batgame.menu_root"/>
+
+        <!-- actions -->
+
+    </data>
+</odoo>

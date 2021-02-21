@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_batgame_city,batgame.city,model_batgame_city,base.group_user,1,1,1,1
+access_batgame_citizen,batgame.citizen,model_batgame_citizen,base.group_user,1,1,1,1
+access_batgame_building,batgame.building,model_batgame_building,base.group_user,1,1,1,1
+access_batgame_building_type,batgame.building_type,model_batgame_building_type,base.group_user,1,1,1,1
+access_batgame_clan,batgame.clan,model_batgame_clan,base.group_user,1,1,1,1
+access_batgame_construction,batgame.construction,model_batgame_construction,base.group_user,1,1,1,1
+access_batgame_battle,batgame.battle,model_batgame_battle,base.group_user,1,1,1,1
+access_batgame_template,batgame.template,model_batgame_template,base.group_user,1,1,1,1
+access_batgame_city_changes,batgame.city_changes,model_batgame_city_changes,base.group_user,1,1,1,1

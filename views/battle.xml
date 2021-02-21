@@ -1,0 +1,112 @@
+<odoo>
+    <data>
+        <!-- Tree and Form building -->
+        <record model="ir.ui.view" id="batgame.battle_tree">
+            <field name="name">Battle tree</field>
+            <field name="model">batgame.battle</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="player"/>
+                    <field name="origin_city"/>
+                    <field name="destiny_city"/>
+                    <field name="travel_duration"/>
+                    <field name="battle_duration"/>
+                    <field name="percent"/>
+                    <field name="launch_time"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.battle_search">
+            <field name="name">Battle Search</field>
+            <field name="model">batgame.battle</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter name="terminated_true" string="Finished" domain="[('terminated','=',True)]"></filter>
+                    <filter name="terminated_false" string="No finished" domain="[('terminated','=',False)]"></filter>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.battle_form">
+            <field name="name">Battle form</field>
+            <field name="model">batgame.battle</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="player" domain="[('is_player','=',True)]"/>
+                            <field name="origin_city" attrs="{'readonly':[('player','=',False)]}"/>
+                            <field name="destiny_city" attrs="{'readonly':[('player','=',False)]}"/>
+                            <field name="travel_duration"/>
+                            <field name="battle_duration"/>
+                            <field name="percent" widget="percentpie"/>
+                            <field name="launch_time"/>
+                        </group>
+                        <group>
+                            <button name="speed_up_battle" type="object" string="Speed up battle"
+                                    icon="fa-bolt" class="oe_highlight"
+                                    context="{'default_battle':active_id}"></button>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.battle_wizard_form">
+            <field name="name">Battle wizard form</field>
+            <field name="model">batgame.battle_wizard</field>
+            <field name="arch" type="xml">
+                <form string="battle">
+                    <sheet>
+                        <group>
+                            <field name="player"/>
+                            <field name="origin_city" attrs="{'readonly':[('player','=',False)]}"/>
+                            <field name="destiny_city" attrs="{'readonly':[('player','=',False)]}"/>
+                        </group>
+                        <footer>
+                            <button name="create_battle" type="object"
+                                    string="Create" class="oe_highlight"/>
+                            <button special="cancel" string="Cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="batgame.launch_battle_wizard"
+                    name="Launch battle"
+                    binding_model="res.partner"
+                    res_model="batgame.battle_wizard"
+                    view_mode="form"
+                    target="new"
+        />
+
+        <record model="ir.ui.view" id="batgame.battle_calendar">
+            <field name="name">Battle Calendar</field>
+            <field name="model">batgame.battle</field>
+            <field name="arch" type="xml">
+                <calendar string="Battle Calendar" date_start="launch_time" date_stop="battle_duration" color="player">
+                    <field name="name"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="batgame.battle_action_window">
+            <field name="name">Battles</field>
+            <field name="res_model">batgame.battle</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <!--<field name="context">{'search_default_player_city':1}</field>-->
+            <field name="context">{'default_terminated': False, 'search_default_terminated_false': 1}</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('batgame.battle_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('batgame.battle_form')}),]"/>
+        </record>
+
+        <!-- Menu -->
+        <menuitem name="Battles" id="batgame.menu_1_battle" parent="batgame.menu_2"
+                  action="batgame.battle_action_window"/>
+    </data>
+</odoo>

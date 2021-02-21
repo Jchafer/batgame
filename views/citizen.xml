@@ -1,0 +1,85 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="batgame.citizen_tree">
+            <field name="name">Citizen tree</field>
+            <field name="model">batgame.citizen</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="age"/>
+                    <field name="resistance"/>
+                    <field name="attack"/>
+                    <field name="city"/>
+                    <field name="requirements"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.citizen_form">
+            <field name="name">Citizen form</field>
+            <field name="model">batgame.citizen</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="age"/>
+                            <field name="resistance"/>
+                            <field name="attack"/>
+                            <field name="city"/>
+                            <field name="requirements"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.citizen_formReadOnly">
+            <field name="name">Citizen formReadOnly</field>
+            <field name="model">batgame.citizen</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="age" readonly="True"/>
+                            <field name="resistance" readonly="True"/>
+                            <field name="attack" readonly="True"/>
+                            <field name="city" readonly="True"/>
+                            <field name="requirements" readonly="True"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.citizen_search">
+            <field name="name">Citizen search</field>
+            <field name="model">batgame.citizen</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter name="Citizens" string="Citizens resistance less than 10"
+                            domain="[('resistance', '&lt;=','10')]"/>
+                    <filter name="Citizens" string="Citizens attack less than 10" domain="[('attack', '&lt;=','10')]"/>
+                    <group string="Group By">
+                        <filter name="group_by_type" string="Type" context="{'group_by': 'type'}"/>
+                        <filter name="group_by_type" string="City" context="{'group_by': 'city'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="batgame.citizen_action_window">
+            <field name="name">Citizens</field>
+            <field name="res_model">batgame.citizen</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem name="Citizens" id="batgame.menu_1_citizen" parent="batgame.menu_2"
+                  action="batgame.citizen_action_window"/>
+    </data>
+</odoo>

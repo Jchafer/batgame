@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="batgame.player_premium_tree">
+            <field name="name">Player Premium Tree</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="is_premium"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.player_premium_form">
+            <field name="name">Player Premium Form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="batgame.player_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Premium">
+                        <group>
+                            <field name="is_premium"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,59 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="batgame.construction_tree">
+            <field name="name">Construction tree</field>
+            <field name="model">batgame.construction</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="progress" widget="progressbar"/>
+                    <field name="building_type"/>
+                    <field name="city"/>
+                    <button name="update_progress" type="object" string="Update Progress" class="oe_highlight"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.construction_form">
+            <field name="name">Construction form</field>
+            <field name="model">batgame.construction</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="progress" widget="progressbar"/>
+                            <field name="building_type"/>
+                            <field name="city"/>
+                            <button name="update_progress" type="object" string="Update Progress" class="oe_highlight"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.construction_search">
+            <field name="name">Construction search</field>
+            <field name="model">batgame.construction</field>
+            <field name="arch" type="xml">
+                <search>
+                    <group string="Group By">
+                        <filter name="group_by_type" string="Type" context="{'group_by': 'building_type'}"/>
+                        <filter name="group_by_type" string="City" context="{'group_by': 'city'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="batgame.construction_action_window">
+            <field name="name">Construction</field>
+            <field name="res_model">batgame.construction</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem name="Constructions" id="batgame.menu_construction" parent="batgame.menu_2"
+                  action="batgame.construction_action_window"/>
+
+    </data>
+</odoo>

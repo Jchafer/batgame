@@ -1,0 +1,28 @@
+<odoo>
+  <data>
+        <record model="ir.cron" forcecreate="True" id="batgame.cron_update_battle">
+            <field name="name">Batgame: Cron Update Battle</field>
+            <field name="model_id" ref="model_batgame_battle"/>
+            <field name="state">code</field>
+            <field name="code">model.update_battle()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="activity_user_type">specific</field>
+            <field name="doall" eval="False" />
+        </record>
+        <record model="ir.cron" forcecreate="True" id="batgame.cron_update_resources">
+            <field name="name">Batgame: Cron Update Resources</field>
+            <field name="model_id" ref="model_batgame_city"/>
+            <field name="state">code</field>
+            <field name="code">model.update_resources()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="activity_user_type">specific</field>
+            <field name="doall" eval="False" />
+        </record>
+  </data>
+</odoo>

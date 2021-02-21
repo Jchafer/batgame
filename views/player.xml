@@ -1,0 +1,204 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="batgame.player_tree">
+            <field name="name">Player tree</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="image" widget="image"/>
+                    <field name="type_race"/>
+                    <field name="level"/>
+                    <field name="cities"/>
+                    <field name="clan"/>
+                    <field name="battles"/>
+                    <field name="cities_attack"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.player_search">
+            <field name="name">Player search</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Name player" filter_domain="[('name', 'ilike', self)]"/>
+                    <!-- Solo se podrán atacar ciudades que el jugador tenga nivel >= 10 -->
+                    <filter name="Cities" string="Cities for attack" domain="[('level', '&gt;=','10')]"/>
+                    <group string="Group By">
+                        <filter name="group_by_type" string="Type" context="{'group_by': 'type_race'}"/>
+                    </group>
+                    <filter name="player_partner" string="Is Player" domain="[('is_player','=',True)]" />
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.player_kanban">
+            <field name="name">Player kanban</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <!--list of field to be loaded -->
+                    <field name="id"/>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_product_vignette">
+                                <div class="o_kanban_image">
+                                    <a type="open">
+                                        <img class="o_image_64_contain"
+                                             t-att-alt="record.name.value"
+                                             t-att-src="kanban_image('res.partner', 'image', record.id.raw_value)"/>
+                                    </a>
+                                </div>
+                                <div class="oe_product_desc">
+                                    <h4>
+                                        <a type="edit">
+                                            <field name="name"/>
+                                        </a>
+                                    </h4>
+                                    <p>
+                                        <b>Level:</b>
+                                        <field name="level"/>
+                                        <br/>
+                                        <b>Clan:</b>
+                                        <field name='clan'/>
+                                        <br/>
+                                        <b>Type:</b>
+                                        <field name="type_race"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.player_form">
+            <field name="name">Player form</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <form string="Player">
+                    <sheet>
+                        <group string="Personal data">
+                            <field name="name"/>
+                            <field name="image" widget="image" class="oe_left oe_avatar" />
+                            <field name="type_race"/>
+                            <field name="level"/>
+                            <field name="clan"/>
+                        </group>
+                        <notebook>
+                            <page string="Battles">
+                                <field name="battles" context="{'default_player':active_id}">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="name"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_product_vignette">
+                                                    <a type="open">
+                                                        <img class="o_image_64_contain"
+                                                             t-att-alt="record.name.value"
+                                                             t-att-src="kanban_image('batgame.city', 'imageCity', record.id.raw_value)"/>
+                                                    </a>
+                                                    <div class="oe_product_desc">
+                                                        <div class="oe_product_desc">
+                                                            <h4>
+                                                                <a type="edit">
+                                                                    <field name="name"/>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Cities">
+                                <field name="cities"/>
+                            </page>
+                            <page string="Cities for attack">
+                                <field name="cities_attack"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.player_inherit_form">
+            <field name="name">Player inherit form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                     <page string="Player">
+                         <group string="Personal Data">
+                            <field name="image" widget="image" class="oe_left oe_avatar" />
+                             <field name="is_player"/>
+                            <field name="type_race"/>
+                            <field name="level"/>
+                            <field name="clan"/>
+                         </group>
+                        <notebook>
+                            <page string="Battles">
+                                <field name="battles" context="{'default_player':active_id}">
+                                    <kanban>
+                                        <!--list of field to be loaded -->
+                                        <field name="id"/> <!-- Agregar id por el record.id.value -->
+                                        <field name="name"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_product_vignette">
+                                                    <a type="open">
+                                                        <img class="o_image_64_contain"
+                                                             t-att-alt="record.name.value"
+                                                             t-att-src="kanban_image('batgame.city', 'imageCity', record.id.raw_value)"/>
+                                                    </a>
+                                                    <div class="oe_product_desc">
+                                                        <div class="oe_product_desc">
+                                                            <h4>
+                                                                <a type="edit">
+                                                                    <field name="name"/>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Cities">
+                                <field name="cities"/>
+                            </page>
+                            <page string="Cities for attack">
+                                <field name="cities_attack"/>
+                            </page>
+                        </notebook>
+                     </page>
+                </notebook>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="batgame.player_action_window">
+            <field name="name">Players</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <!--<field name="domain"> [('is_player','=',True)]</field>-->
+            <field name="domain"></field>
+            <field name="context">{'default_is_player': True, 'search_default_player_partner': 1}</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('batgame.player_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('batgame.player_form')}),]" />
+        </record>
+
+        <!-- Menu -->
+        <menuitem name="Players" id="batgame.menu_1_list" parent="batgame.menu_1"
+                  action="batgame.player_action_window"/>
+    </data>
+</odoo>

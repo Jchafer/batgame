@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="batgame.clan_tree">
+            <field name="name">Clan tree</field>
+            <field name="model">batgame.clan</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="level"/>
+                    <field name="players"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.clan_form">
+            <field name="name">Clan form</field>
+            <field name="model">batgame.clan</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="level"/>
+                            <field name="players"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.clan_search">
+            <field name="name">Clan search</field>
+            <field name="model">batgame.clan</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter name="Clans" string="Clans level more than 10" domain="[('level', '&gt;','10')]"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="batgame.clan_action_window">
+            <field name="name">Clans</field>
+            <field name="res_model">batgame.clan</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem name="Clans" id="batgame.menu_1_clan" parent="batgame.menu_1"
+                  action="clan_action_window"/>
+    </data>
+</odoo>

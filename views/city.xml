@@ -1,0 +1,226 @@
+<odoo>
+    <data>
+        <act_window
+                id="batgame.add_citizen"
+                name="Add citizen"
+                res_model="batgame.citizen"
+                view_id="batgame.citizen_formReadOnly"
+                target="new"
+                domain="[('city','=',active_id)]"
+        />
+        <act_window
+                id="batgame.add_building"
+                name="Add building"
+                res_model="batgame.building"
+                view_id="batgame.building_formReadOnly"
+                target="new"
+                domain="[('building','=',active_id)]"
+        />
+
+        <record model="ir.ui.view" id="batgame.city_changes_graph">
+            <field name="name">City Changes graph</field>
+            <field name="model">batgame.city_changes</field>
+            <field name="arch" type="xml">
+                <graph string="Changes History" type="line">
+                    <field name="time" type="row"/>
+                    <field name="city" type="col"/>
+                    <field name="food" type="measure"/>
+                    <field name="wood" type="measure"/>
+                    <field name="stone" type="measure"/>
+
+                </graph>
+
+            </field>
+        </record>
+
+
+        <act_window id="batgame.launch_city_changes_graph"
+                    name="Launch City Changes graph"
+                    res_model="batgame.city_changes"
+                    view_mode="graph"
+                    target="new"
+                    domain="[('city','=',active_id)]"
+        />
+
+        <record model="ir.actions.server" id="batgame.change_city_action">
+            <field name="name">Change City Server Action</field>
+            <field name="model_id" ref="model_batgame_city"/>
+            <field name="binding_model_id" ref="model_batgame_city"/>
+            <field name="state">code</field>
+            <field name="code">
+                action=model.modified_city()
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.city_tree">
+            <field name="name">City tree</field>
+            <field name="model">batgame.city</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="wood&lt;1000" decoration-info="wood>2500">
+                    <field name="name"/>
+                    <field name="player"/>
+                    <field name="level"/>
+                    <field name="citizens"/>
+                    <field name="buildings"/>
+                    <field name="food"/>
+                    <field name="wood"/>
+                    <field name="stone"/>
+                    <field name="pos_x"/>
+                    <field name="pos_y"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.city_form">
+            <field name="name">City form</field>
+            <field name="model">batgame.city</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="status" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="player" domain="[('is_player','=',True)]"/>
+                            <field name="level"/>
+                            <field name="imageCity" widget="image"/>
+                        </group>
+                        <field name="citizens" context="{'default_player':active_id}"/>
+                        <!--<button name="%(batgame.add_citizen)d" type="action" string="Add citizen"
+                                icon="fa-bolt"
+                                context="{'default_city':active_id}"></button>-->
+                        <button name="create_citizen" type="object" string="Create citizen"
+                                icon="fa-bolt"
+                                context="{'default_city':active_id}"></button>
+                        <field name="buildings" context="{'default_player':active_id}"/>
+                        <button name="create_building" type="object" string="Create building"
+                                icon="fa-bolt"
+                                context="{'default_city':active_id}"></button>
+                        <group>
+                            <field name="food"/>
+                            <field name="wood"/>
+                            <field name="stone"/>
+                            <field name="pos_x"/>
+                            <field name="pos_y"/>
+                        </group>
+                        <group>
+                            <field name="city_changes">
+                                <tree limit="10">
+                                    <field name="name"/>
+                                    <field name="food"/>
+                                    <field name="wood"/>
+                                    <field name="wood"/>
+                                </tree>
+                            </field>
+
+                            <button name="%(batgame.launch_city_changes_graph)d" type="action" string="Show Graph"
+                                    class="oe_highlight"></button>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="batgame.city_wizard_form">
+            <field name="name">City wizard form</field>
+            <field name="model">batgame.city_wizard</field>
+            <field name="arch" type="xml">
+                <form string="City">
+                    <header>
+                        <field name="state" widget="statusbar"></field>
+                    </header>
+                    <sheet>
+                        <field name="imageCity" widget="image"/>
+                        <group string="Initial data" states="initial">
+                            <field name="name"/>
+                            <field name="player" domain="[('is_player','=',True)]"/>
+                            <field name="food"/>
+                            <field name="wood"/>
+                            <field name="stone"/>
+                            <field name="pos_x"/>
+                            <field name="pos_y"/>
+                        </group>
+                        <notebook states="buildings">
+                            <page string="buildings">
+                                <separator string="Available Buildings"/>
+                                <field name="buildings">
+                                    <tree>
+                                        <field name="name"/>
+                                        <button name="add" type="object"
+                                                string="Add" class="oe_highlight"
+                                                context="{'city_wizard':parent.id}"/>
+                                    </tree>
+                                </field>
+
+                                <!--<group string="Select building type">
+                                    <group>
+                                        <field name="buildings_aux"/>
+                                    </group>
+                                    <group>
+                                        <button name="add_building" type="object" string="Add" class="oe_highlight"/>
+                                    </group>
+
+                                </group>-->
+                                <separator string="Buildings"/>
+                                <field name="buildings_new" context="{'default_city_wizard': id}">
+
+                                </field>
+
+                            </page>
+                        </notebook>
+                        <!--<group string="Buildings" states="buildings">
+                            <field name="buildings" context="{'default_player':active_id}"/>
+                        </group>-->
+                        <!--<group string="Citizens" states="citizens">
+                            <field name="citizens" context="{'default_player':active_id}"/>
+                        </group>-->
+                        <footer>
+                            <button states="buildings" name="previous" type="object"
+                                    string="Previous" class="oe_highlight"/>
+                            <button states="initial" name="next" type="object"
+                                    string="Next" class="oe_highlight"/>
+
+                            <button states="buildings" name="create_city" type="object"
+                                    string="Create" class="oe_highlight"/>
+                            <button states="initial, buildings" special="cancel" string="Cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="batgame.launch_city_wizard"
+                    name="Create city"
+                    binding_model="res.partner"
+                    res_model="batgame.city_wizard"
+                    view_mode="form"
+                    target="new"
+        />
+
+        <record model="ir.ui.view" id="batgame.city_search">
+            <field name="name">City search</field>
+            <field name="model">batgame.city</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter name="Cities" string="City with all materials less than 1000" domain="[('food', '&lt;=','1000'),('wood', '&lt;=','1000'),('stone', '&lt;=','1000')]"/>
+                    <group string="Group By">
+                        <filter name="group_by_type" string="Player" context="{'group_by': 'player'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="batgame.city_action_window">
+            <field name="name">Cities</field>
+            <field name="res_model">batgame.city</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_player_city':1}</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem name="Cities" id="batgame.menu_1_city" parent="batgame.menu_2"
+                  action="batgame.city_action_window"/>
+    </data>
+</odoo>
